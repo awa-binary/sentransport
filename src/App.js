@@ -2,6 +2,7 @@ import "./App.css";
 import Header from "./Header";
 import ListeLignes from "./ListeLignes";
 import Footer from "./Footer";
+import StatReseau from "./StatReseau";
 
 function App() {
   const lignes = [
@@ -11,6 +12,7 @@ function App() {
       depart: "Parcelles Assainies",
       arrivee: "Plateau",
       arrets: 14,
+      couleur: "#c0392b",
     },
     {
       id: 2,
@@ -18,6 +20,7 @@ function App() {
       depart: "Guediawaye",
       arrivee: "Place Obelisque",
       arrets: 18,
+      couleur: "#3498db",
     },
     {
       id: 3,
@@ -25,6 +28,7 @@ function App() {
       depart: "Pikine",
       arrivee: "Medina",
       arrets: 12,
+      couleur: "#6c3483",
     },
     {
       id: 4,
@@ -32,6 +36,7 @@ function App() {
       depart: "Ouakam",
       arrivee: "Grand Dakar",
       arrets: 10,
+      couleur: "#2471a3",
     },
     {
       id: 5,
@@ -39,6 +44,7 @@ function App() {
       depart: "Almadies",
       arrivee: "Colobane",
       arrets: 16,
+      couleur: "#b7950b",
     },
     {
       id: 6,
@@ -47,6 +53,38 @@ function App() {
       arrivee: "Sandaga",
       arrets: 11,
     },
+    {
+      id: 7,
+      numero: "3",
+      depart: "Fann",
+      arrivee: "HLM",
+      arrets: 9,
+      couleur: "#117a65",
+    },
+    {
+      id: 8,
+      numero: "9",
+      depart: "Liberte",
+      arrivee: "Medina",
+      arrets: 13,
+      couleur: "#784212",
+    },
+    {
+      id: 9,
+      numero: "17",
+      depart: "Sicap",
+      arrivee: "Dieuppeul",
+      arrets: 8,
+      couleur: "#1f618d",
+    },
+    {
+      id: 10,
+      numero: "21",
+      depart: "HLM",
+      arrivee: "Sandaga",
+      arrets: 11,
+      couleur: "#6c3483",
+    },
   ];
 
   return (
@@ -54,6 +92,7 @@ function App() {
       <Header />
 
       <main className="contenu">
+        <StatReseau lignes={lignes} />
         <ListeLignes lignes={lignes} />
       </main>
 
