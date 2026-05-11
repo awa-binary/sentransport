@@ -1,10 +1,18 @@
+import { useState } from "react";
+
 import "./App.css";
 import Header from "./Header";
+import Recherche from "./Recherche";
 import ListeLignes from "./ListeLignes";
+import DetailLigne from "./DetailLigne";
 import Footer from "./Footer";
 import StatReseau from "./StatReseau";
+import LigneBus from "./LigneBus";
 
 function App() {
+  const [recherche, setRecherche] = useState("");
+  const [ligneSelectionnee, setLigneSelectionnee] = useState(null);
+
   const lignes = [
     {
       id: 1,
@@ -12,90 +20,145 @@ function App() {
       depart: "Parcelles Assainies",
       arrivee: "Plateau",
       arrets: 14,
-      couleur: "#c0392b",
+      listeArrets: [
+        "Parcelles U14",
+        "Parcelles U10",
+        "Camberene",
+        "Patte d'Oie",
+        "Grand Dakar",
+        "Colobane",
+        "Ponty",
+        "Plateau",
+      ],
     },
+
     {
       id: 2,
       numero: "7",
       depart: "Guediawaye",
       arrivee: "Place Obelisque",
       arrets: 18,
-      couleur: "#3498db",
+      listeArrets: [
+        "Guediawaye",
+        "Pikine",
+        "Thiaroye",
+        "Keur Massar",
+        "Grand Yoff",
+        "Parcelles",
+        "Liberte 6",
+        "Place Obelisque",
+      ],
     },
+
     {
       id: 3,
       numero: "15",
       depart: "Pikine",
       arrivee: "Medina",
       arrets: 12,
-      couleur: "#6c3483",
+      listeArrets: [
+        "Pikine Centre",
+        "Thiaroye Gare",
+        "Hann",
+        "Colobane",
+        "Fass",
+        "Medina",
+      ],
     },
+
     {
       id: 4,
       numero: "23",
       depart: "Ouakam",
       arrivee: "Grand Dakar",
       arrets: 10,
-      couleur: "#2471a3",
+      listeArrets: [
+        "Ouakam Village",
+        "Mermoz",
+        "Fann",
+        "Point E",
+        "Liberte 5",
+        "Grand Dakar",
+      ],
     },
+
     {
       id: 5,
       numero: "8",
       depart: "Almadies",
       arrivee: "Colobane",
       arrets: 16,
-      couleur: "#b7950b",
+      listeArrets: [
+        "Almadies",
+        "Ngor",
+        "Yoff",
+        "Ouest Foire",
+        "Liberte 6",
+        "Colobane",
+      ],
     },
+
     {
       id: 6,
       numero: "12",
       depart: "Yoff",
       arrivee: "Sandaga",
       arrets: 11,
-    },
-    {
-      id: 7,
-      numero: "3",
-      depart: "Fann",
-      arrivee: "HLM",
-      arrets: 9,
-      couleur: "#117a65",
-    },
-    {
-      id: 8,
-      numero: "9",
-      depart: "Liberte",
-      arrivee: "Medina",
-      arrets: 13,
-      couleur: "#784212",
-    },
-    {
-      id: 9,
-      numero: "17",
-      depart: "Sicap",
-      arrivee: "Dieuppeul",
-      arrets: 8,
-      couleur: "#1f618d",
-    },
-    {
-      id: 10,
-      numero: "21",
-      depart: "HLM",
-      arrivee: "Sandaga",
-      arrets: 11,
-      couleur: "#6c3483",
+      listeArrets: [
+        "Yoff Village",
+        "Aeroport LSS",
+        "Parcelles U17",
+        "Grand Yoff",
+        "HLM",
+        "Sandaga",
+      ],
     },
   ];
+
+  // Filtrer les lignes selon le texte tape
+  const lignesFiltrees = lignes.filter(
+    (l) =>
+      l.depart.toLowerCase().includes(recherche.toLowerCase()) ||
+      l.arrivee.toLowerCase().includes(recherche.toLowerCase()) ||
+      l.numero.includes(recherche),
+  );
+
+  function handleClickLigne(ligne) {
+    if (ligneSelectionnee && ligneSelectionnee.id === ligne.id) {
+      setLigneSelectionnee(null); // re-clic = deselectioner
+    } else {
+      setLigneSelectionnee(ligne); // premier clic = selectionner
+    }
+  }
 
   return (
     <div className="App">
       <Header />
-
       <main className="contenu">
-        <StatReseau lignes={lignes} />
-        <ListeLignes lignes={lignes} />
-      </main>
+        <Recherche valeur={recherche} onChange={setRecherche} />
 
+        <p className="resultat-recherche">
+          {lignesFiltrees.length} ligne
+          {lignesFiltrees.length > 1 ? "s" : ""} trouvee
+          {lignesFiltrees.length > 1 ? "s" : ""}
+        </p>
+
+        {lignesFiltrees.map((ligne) => (
+          <LigneBus
+            key={ligne.id}
+            numero={ligne.numero}
+            depart={ligne.depart}
+            arrivee={ligne.arrivee}
+            arrets={ligne.arrets}
+            estSelectionnee={
+              ligneSelectionnee && ligneSelectionnee.id === ligne.id
+            }
+            onClick={() => handleClickLigne(ligne)}
+          />
+        ))}
+
+        {ligneSelectionnee && <DetailLigne ligne={ligneSelectionnee} />}
+      </main>
       <Footer />
     </div>
   );
