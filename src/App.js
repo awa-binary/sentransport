@@ -12,6 +12,7 @@ import LigneBus from "./LigneBus";
 function App() {
   const [recherche, setRecherche] = useState("");
   const [ligneSelectionnee, setLigneSelectionnee] = useState(null);
+  const [nombreRecherches, setNombreRecherches] = useState(0);
 
   const lignes = [
     {
@@ -130,12 +131,20 @@ function App() {
       setLigneSelectionnee(ligne); // premier clic = selectionner
     }
   }
+  function handleRecherche(valeur) {
+    setRecherche(valeur);
+    setNombreRecherches(nombreRecherches + 1);
+  }
 
   return (
     <div className="App">
       <Header />
       <main className="contenu">
-        <Recherche valeur={recherche} onChange={setRecherche} />
+        <Recherche valeur={recherche} onChange={handleRecherche} />
+
+        <p className="compteur">
+          Vous avez effectué {nombreRecherches} recherche(s)
+        </p>
 
         <p className="resultat-recherche">
           {lignesFiltrees.length} ligne
@@ -156,6 +165,10 @@ function App() {
             onClick={() => handleClickLigne(ligne)}
           />
         ))}
+
+        {lignesFiltrees.length === 0 && (
+          <p className="aucune-ligne">Aucune ligne trouvée</p>
+        )}
 
         {ligneSelectionnee && <DetailLigne ligne={ligneSelectionnee} />}
       </main>

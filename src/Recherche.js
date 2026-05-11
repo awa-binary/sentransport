@@ -6,10 +6,13 @@ function Recherche({ valeur, onChange }) {
       <input
         type="text"
         className="recherche-input"
-        placeholder="Rechercher une ligne (depart, arrivee)..."
+        placeholder="Rechercher une ligne (Départ, arrivée)..."
         value={valeur}
         onChange={(e) => onChange(e.target.value)}
       />
+      <button className="recherche-btn" onClick={() => onChange("")}>
+        Effacer
+      </button>
     </div>
   );
 }
